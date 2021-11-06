@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@model BadNews.Models.News.FullArticleModel
+@using System.Globalization
+@{
+    var culture = CultureInfo.CreateSpecificCulture("ru-ru");
+}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -28,11 +33,11 @@
         <div class="row">
             <div class="col-md-8 news-main">
                 <div class="news-article">
-                    <h4 class="news-article-title">{{header}}</h4>
+                    <h4 class="news-article-title">@Model.Article.Header</h4>
                     <p class="news-article-meta">
-                        {{date}}
+                        @Model.Article.Date.ToString("d MMM yyyy", culture)
                     </p>
-                    {{content}}
+                    @Html.Raw(Model.Article.ContentHtml)
                 </div>
             </div>
 
