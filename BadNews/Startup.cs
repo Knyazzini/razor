@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using BadNews.Validation;
 
 namespace BadNews
 {
@@ -27,6 +29,7 @@ namespace BadNews
                 mvcBuilder.AddRazorRuntimeCompilation();
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
+            services.AddSingleton<IValidationAttributeAdapterProvider, StopWordsAttributeAdapterProvider>();
         }
 
         public void Configure(IApplicationBuilder app)
