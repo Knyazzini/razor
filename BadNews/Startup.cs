@@ -40,7 +40,12 @@ namespace BadNews
         // В этом методе конфигурируется последовательность обработки HTTP-запроса
         public void Configure(IApplicationBuilder app)
         {
-            app.UseDeveloperExceptionPage();
+            // app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+            else
+                app.UseExceptionHandler("/Errors/Exception");
+            // app.UseExceptionHandler("/Errors/Exception");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
@@ -68,9 +73,10 @@ namespace BadNews
                     controller = "Errors",
                     action = "StatusCode"
                 });
+                endpoints.MapControllerRoute("default", "{controller}/{action}");
             });
 
-            
+
         }
 
         // Региональные настройки, которые используются при обработке запросов новостей.
