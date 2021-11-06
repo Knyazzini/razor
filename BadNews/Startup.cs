@@ -32,6 +32,7 @@ namespace BadNews
         // В этом методе добавляются сервисы в DI-контейнер
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
         }
@@ -42,6 +43,7 @@ namespace BadNews
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
             app.Map("/news", newsApp =>
             {
@@ -57,8 +59,18 @@ namespace BadNews
             {
                 rootPathApp.Run(RenderIndexPage);
             });
-
             // Остальные запросы — 404 Not Found
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("status-code", "StatusCode/{code?}", new
+                {
+                    controller = "Errors",
+                    action = "StatusCode"
+                });
+            });
+
+            
         }
 
         // Региональные настройки, которые используются при обработке запросов новостей.
