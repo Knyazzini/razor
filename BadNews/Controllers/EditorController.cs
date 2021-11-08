@@ -35,9 +35,17 @@ namespace BadNews.Controllers
                 ContentHtml = model.ContentHtml,
             });
 
-            return RedirectToAction("FullArticle", "News", new {
+            return RedirectToAction("FullArticle", "News", new
+            {
                 id = id
             });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteArticle(Guid id)
+        {
+            newsRepository.DeleteArticleById(id);
+            return RedirectToAction("Index", "News");
         }
     }
 }
