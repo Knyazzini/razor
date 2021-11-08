@@ -18,7 +18,11 @@ namespace BadNews.Elevation
             {
                 if (context.Request.Query.ContainsKey("up"))
                 {
-                    context.Response.Cookies.Append(ElevationConstants.CookieName, ElevationConstants.CookieValue);
+                    context.Response.Cookies.Append(ElevationConstants.CookieName, ElevationConstants.CookieValue,
+                    new CookieOptions
+                    {
+                        HttpOnly = true
+                    });
                 }
                 else
                 {
