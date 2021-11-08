@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace BadNews
 {
@@ -46,6 +47,10 @@ namespace BadNews
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseEnvironment(Environments.Development);
+                })
+                .ConfigureHostConfiguration(config =>
+                {
+                    config.AddJsonFile("appsettings.Secret.json", optional: true, reloadOnChange: false);
                 })
                 .UseSerilog((hostingContext, loggerConfiguration) =>
             loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
