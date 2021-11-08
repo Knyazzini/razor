@@ -37,6 +37,7 @@ namespace BadNews
             {
                 options.EnableForHttps = true;
             });
+            services.AddMemoryCache();
             var mvcBuilder = services.AddControllersWithViews();
             if (env.IsDevelopment())
             {
