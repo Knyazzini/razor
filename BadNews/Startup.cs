@@ -27,14 +27,21 @@ namespace BadNews
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvcBuilder = services.AddControllersWithViews();
-            if (env.IsDevelopment())
-                mvcBuilder.AddRazorRuntimeCompilation();
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
             services.AddSingleton<IValidationAttributeAdapterProvider, StopWordsAttributeAdapterProvider>();
             services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
             services.Configure<OpenWeatherOptions>(configuration.GetSection("OpenWeather"));
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
+            var mvcBuilder = services.AddControllersWithViews();
+            if (env.IsDevelopment())
+            {
+                mvcBuilder.AddRazorRuntimeCompilation();
+
+            }
         }
 
         public void Configure(IApplicationBuilder app)
@@ -49,6 +56,7 @@ namespace BadNews
             }
             app.UseMiddleware<ElevationMiddleware>();
             app.UseHttpsRedirection();
+            app.UseResponseCompression();
             app.UseStaticFiles();
             app.UseSerilogRequestLogging();
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
