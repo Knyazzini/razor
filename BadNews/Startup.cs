@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using BadNews.Validation;
+using BadNews.Repositories.Weather;
 
 namespace BadNews
 {
@@ -30,6 +31,7 @@ namespace BadNews
             services.AddSingleton<INewsRepository, NewsRepository>();
             services.AddSingleton<INewsModelBuilder, NewsModelBuilder>();
             services.AddSingleton<IValidationAttributeAdapterProvider, StopWordsAttributeAdapterProvider>();
+            services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
         }
 
         public void Configure(IApplicationBuilder app)
