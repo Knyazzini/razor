@@ -64,7 +64,10 @@ namespace BadNews
                 endpoints.MapControllerRoute("default", "{controller=News}/{action=Index}/{id?}");
             });
 
-
+            app.MapWhen(context => context.Request.IsElevated(), branchApp =>
+            {
+                branchApp.UseDirectoryBrowser("/files");
+            });
         }
     }
 }
