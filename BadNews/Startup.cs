@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using BadNews.Validation;
 using BadNews.Repositories.Weather;
 using BadNews.Elevation;
-
+using System;
+using Microsoft.AspNetCore.Http;
 
 namespace BadNews
 {
@@ -57,7 +58,18 @@ namespace BadNews
             app.UseMiddleware<ElevationMiddleware>();
             app.UseHttpsRedirection();
             app.UseResponseCompression();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = options =>
+                {
+                    options.Context.Response.GetTypedHeaders().CacheControl =
+                        new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                        {
+                            Public = false,
+                            MaxAge = TimeSpan.FromDays(1)
+                        };
+                }
+            });
             app.UseSerilogRequestLogging();
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
