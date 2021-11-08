@@ -9,6 +9,8 @@ using Serilog;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using BadNews.Validation;
 using BadNews.Repositories.Weather;
+using BadNews.Elevation;
+
 
 namespace BadNews
 {
@@ -38,9 +40,14 @@ namespace BadNews
         public void Configure(IApplicationBuilder app)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
             else
+            {
                 app.UseExceptionHandler("/Errors/Exception");
+            }
+            app.UseMiddleware<ElevationMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSerilogRequestLogging();
